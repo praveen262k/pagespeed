@@ -1,4 +1,4 @@
-<div class="row marketing"> 
+<div class="row"> 
   <form name="form">
 
     <div class="col-lg-12">
@@ -13,8 +13,8 @@
   </form>
 
 </div>
-<div class="row" role="alert">
-        <span class="error" ng-show="form.$submitted && form.url.$error.required">
+<div class="row" role="alert" ng-show="form.$submitted && form.url.$error.required">
+        <span class="error">
          Required!</span>
       </div>    
       <div class="row progress" ng-show="main.isProcessing">
@@ -22,10 +22,18 @@
           <span class="sr-only">45% Complete</span>
         </div>
       </div>
-<div class="row">
-  
-    
 
+<div class="row">
+    <div class="col-lg-12"><button class="glyphicon glyphicon-collapse-down" ng-click="main.showHistory()">History</button></div>
+    <div class="col-lg-12">
+      <ul>
+        <li ng-repeat="item in main.searchHistory" ng-bind-html="item.url">
+        </li>
+      </ul>
+    </div>
+</div>
+
+<div class="row">
     <div class="panel panel-primary" ng-show="main.onSuccess">
       <!-- Default panel contents -->
       <div class="panel-heading">Pagespeed Insight summary</div>

@@ -15,9 +15,10 @@ angular
     'ngResource',
     'ngRoute',
     'ngSanitize',
-    'ngTouch'
+    'ngTouch',
+    'LocalStorageModule'
   ])
-  .config(function ($routeProvider) {
+  .config(function ($routeProvider, localStorageServiceProvider) {
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
@@ -32,4 +33,8 @@ angular
       .otherwise({
         redirectTo: '/'
       });
+    
+    localStorageServiceProvider.setPrefix('com.nmo.pagespeed');
   });
+
+  
