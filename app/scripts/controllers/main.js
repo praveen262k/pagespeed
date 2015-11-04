@@ -78,7 +78,7 @@ angular.module('pagespeedApp')
 
             var history = getHistory();
 
-            history.push({url: $scope.main.url, endPoint: endPoint, time: Date.now()});
+            history.push({url: $scope.main.url, endPoint: endPoint, time: Date.now(), result: pageSpeedResponse});
 
             localStorageService.set(storageKey, JSON.stringify(history));
 
