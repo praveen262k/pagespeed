@@ -1,0 +1,58 @@
+<div class="row marketing"> 
+  <form name="form">
+
+    <div class="col-lg-12">
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="Url..."  name="url" required ng-model="main.url">
+        <span class="input-group-btn">
+          <button class="btn btn-default" ng-disabled="main.isProcessing" ng-click="main.onClick()" type="button">Go!</button>
+        </span>
+      </div><!-- /input-group -->
+  </div><!-- /.col-lg-6 -->
+
+  </form>
+
+</div>
+<div class="row" role="alert">
+        <span class="error" ng-show="form.$submitted && form.url.$error.required">
+         Required!</span>
+      </div>    
+      <div class="row progress" ng-show="main.isProcessing">
+        <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 45%">
+          <span class="sr-only">45% Complete</span>
+        </div>
+      </div>
+<div class="row">
+  
+    
+
+    <div class="panel panel-primary" ng-show="main.onSuccess">
+      <!-- Default panel contents -->
+      <div class="panel-heading">Pagespeed Insight summary</div>
+        <div class="panel-body">
+          <div class="col-md-4">Speed Score: <label ng-bind-html="main.speed.score"></label></div>
+          <div class="col-md-4">Usability Score: <label ng-bind-html="main.usability.score"></label></div>
+          <div class="col-md-4"><label class="checkbox-inline"><input type="checkbox" ng-click="main.group = 'USABILITY'" name="optUsability">Usability</label>
+<label class="checkbox-inline"><input type="checkbox" name="optSpeed" ng-click="main.group = 'SPEED'">Speed</label></div>
+        </div>
+
+      <!-- Table -->
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Rule</th>
+            <th>Group</th>
+            <th>Impact</th>
+          </tr>
+        </thead>
+        <tr ng-repeat="result in main.formattedResults | orderBy:'localizedRuleName':true">
+          <td ng-bind-html="result.localizedRuleName"></td>
+          <td ng-bind-html="result.groups[0]"></td>
+          <td ng-bind-html="result.ruleImpact"></td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="alert alert-danger" role="alert"  ng-show="main.onError">Oops something went wrong!! Retry!</div>
+
+</div>
