@@ -7,19 +7,47 @@
  * # MainCtrl
  * Controller of the pagespeedApp
  */
-angular.module('pagespeedApp')
-  .controller('MainCtrl', [
+
+var pagespeedApp = angular.module('pagespeedApp');
+
+
+// I define an asynchronous wrapper to the native confirm() method. It returns a
+// promise that will be "resolved" if the user agrees to the confirmation; or
+// will be "rejected" if the user cancels the confirmation.
+pagespeedApp.factory(
+    "confirm",
+    function( $window, $q ) {
+        // Define promise-based confirm() method.
+        function confirm( message ) {
+            var defer = $q.defer();
+            // The native confirm will return a boolean.
+            if ( $window.confirm( message ) ) {
+                defer.resolve( true );
+            } else {
+                defer.reject( false );
+            }
+            return( defer.promise );
+        }
+        return( confirm );
+    }
+);
+
+pagespeedApp.controller('MainCtrl', [
          '$scope',
          '$http',
          'localStorageService',
+         'confirm',
       function (
          $scope ,
          $http,
-         localStorageService) {
+         localStorageService,
+         confirm) {
     
     var key = 'AIzaSyA6Sgw_itJVMD33bd4hE4dRc--Vkws-tt8';
     var baseAPIUrl = 'https://www.googleapis.com/pagespeedonline/v2/runPagespeed?strategy=mobile';
     var storageKey = 'endpoint.history'; 
+
+    var self = this;
 
     //$scope.main.includeThirdParty = false;
             
@@ -53,6 +81,13 @@ angular.module('pagespeedApp')
       $scope.main.historyVisible = $scope.main.historyVisible? !$scope.main.historyVisible: true;
       var history = getHistory();
       $scope.main.searchHistory = history;
+    };
+
+    this.clearHistory = function() {
+      confirm('Are you sure want to clear?').then(function(){
+        localStorageService.set(storageKey, JSON.stringify([]));
+        self.showHistory();
+      });
     };
 
     this.showThisResult = function(result) {
