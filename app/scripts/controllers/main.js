@@ -18,8 +18,10 @@ angular.module('pagespeedApp')
          localStorageService) {
     
     var key = 'AIzaSyA6Sgw_itJVMD33bd4hE4dRc--Vkws-tt8';
-    var baseAPIUrl = 'https://www.googleapis.com/pagespeedonline/v2/runPagespeed?filter_third_party_resources=true&strategy=mobile&key=';
+    var baseAPIUrl = 'https://www.googleapis.com/pagespeedonline/v2/runPagespeed?strategy=mobile';
     var storageKey = 'endpoint.history'; 
+
+    //$scope.main.includeThirdParty = false;
             
     this.url = 'http://www.neimanmarcus.com/';
 
@@ -54,11 +56,16 @@ angular.module('pagespeedApp')
     };
 
     this.onClick = function() {
+      if (!$scope.main.includeThirdParty) {
+        $scope.main.includeThirdParty = false;
+      }
+      //alert($scope.main.includeThirdParty); return;
       $scope.main.isProcessing = true;
       $scope.main.onSuccess = false;
       $scope.main.onError = false;
 
-      var endPoint = baseAPIUrl + key + '&url=' + $scope.main.url;
+      // Service code :)
+      var endPoint = baseAPIUrl + '&filter_third_party_resources=' + !$scope.main.includeThirdParty + '&key=' + key + '&url=' + $scope.main.url;
 
       $http.get(endPoint).then(
         function(res) {
@@ -82,7 +89,7 @@ angular.module('pagespeedApp')
 
             localStorageService.set(storageKey, JSON.stringify(history));
 
-            showHistory();
+            //showHistory();
           }
         }, 
         function() {
