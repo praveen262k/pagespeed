@@ -50,8 +50,8 @@ angular.module('pagespeedApp')
     ];
 
     this.showHistory = function() {
+      $scope.main.historyVisible = $scope.main.historyVisible? !$scope.main.historyVisible: true;
       var history = getHistory();
-
       $scope.main.searchHistory = history;
     };
 
