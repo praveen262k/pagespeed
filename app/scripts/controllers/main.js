@@ -55,6 +55,24 @@ angular.module('pagespeedApp')
       $scope.main.searchHistory = history;
     };
 
+    this.showThisResult = function(result) {
+      console.log('This resultmain');
+      bindResult(result);
+    };  
+
+    var bindResult = function(pageSpeedResponse) {
+      $scope.main.speed = {};
+      $scope.main.usability = {};
+
+      $scope.main.speed.score = pageSpeedResponse.ruleGroups.SPEED.score;
+      $scope.main.usability.score = pageSpeedResponse.ruleGroups.USABILITY.score;
+
+      $scope.main.formattedResults = pageSpeedResponse.formattedResults.ruleResults;
+
+      $scope.main.isProcessing = false;
+      $scope.main.onSuccess = true;
+    };
+
     this.onClick = function() {
       if (!$scope.main.includeThirdParty) {
         $scope.main.includeThirdParty = false;
@@ -71,21 +89,14 @@ angular.module('pagespeedApp')
         function(res) {
           if (res && res.status === 200 && res.data) {
             var pageSpeedResponse = res.data;
-            $scope.main.speed = {};
-            $scope.main.usability = {};
+            
 
             console.log(pageSpeedResponse);
-            $scope.main.speed.score = pageSpeedResponse.ruleGroups.SPEED.score;
-            $scope.main.usability.score = pageSpeedResponse.ruleGroups.USABILITY.score;
-
-            $scope.main.formattedResults = pageSpeedResponse.formattedResults.ruleResults;
-
-            $scope.main.isProcessing = false;
-            $scope.main.onSuccess = true;
+            bindResult(pageSpeedResponse);
 
             var history = getHistory();
 
-            history.push({url: $scope.main.url, endPoint: endPoint, time: Date.now(), result: pageSpeedResponse});
+            history.push({url: $scope.main.url, endPoint: endPoint, time: Date.now(), result: pageSpeedResponse, isThirdPartyInclude: $scope.main.includeThirdParty});
 
             localStorageService.set(storageKey, JSON.stringify(history));
 

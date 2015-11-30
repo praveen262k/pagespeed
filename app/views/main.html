@@ -28,12 +28,32 @@
 
 <div class="row">
     <div class="col-lg-12"><button class="glyphicon glyphicon-collapse-down" ng-click="main.showHistory()">History</button></div>
-    <div class="col-lg-12">
+    <!-- <div class="col-lg-12">
       <ul>
         <li ng-repeat="item in main.searchHistory" ng-bind-html="item.url">
         </li>
       </ul>
-    </div>
+    </div> -->
+
+    <!-- Table -->
+      <table class="table" ng-show="main.searchHistory !== undefined">
+        <thead>
+          <tr>
+            <th>URL</th>
+            <th>DateTime</th>
+            <th>Score</th>
+            <th>3rd Party?</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tr ng-repeat="item in main.searchHistory" >
+          <td ng-bind-html="item.url"></td>
+          <td>{{item.time | date:'medium'}}</td>
+          <td ng-bind-html="item.result.ruleGroups.SPEED.score"></td>
+          <td ng-bind-html="item.isThirdPartyInclude"></td>
+          <td><button  ng-click="main.showThisResult(item.result)">Show</button></td>
+        </tr>
+      </table>
 </div>
 
 <div class="row">
@@ -42,9 +62,9 @@
       <div class="panel-heading">Pagespeed Insight summary</div>
         <div class="panel-body">
 
-          <div class="col-md-3">Speed Score: <label ng-bind-html="main.speed.score"></label></div>
-          <div class="col-md-3">Usability Score: <label ng-bind-html="main.usability.score"></label></div>
-          <div class="col-md-3"><label class="checkbox-inline"><input type="checkbox" ng-click="main.group = 'USABILITY'" name="optUsability">Usability</label>
+          <div class="col-md-4">Speed Score: <label ng-bind-html="main.speed.score"></label></div>
+          <div class="col-md-4">Usability Score: <label ng-bind-html="main.usability.score"></label></div>
+          <div class="col-md-4"><label class="checkbox-inline"><input type="checkbox" ng-click="main.group = 'USABILITY'" name="optUsability">Usability</label>
           <label class="checkbox-inline"><input type="checkbox" name="optSpeed" ng-click="main.group = 'SPEED'">Speed</label></div>
           <!-- <div class="col-md-3">Include Third party: <label class="checkbox-inline"><input type="checkbox" ng-click="main.includeThirdParty = !main.includeThirdParty" name="optUsability">Third Party</label></div> -->
         </div>
